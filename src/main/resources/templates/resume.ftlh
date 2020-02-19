@@ -101,7 +101,7 @@
               <div class="lang-skill-wrapper">
                 <div class="lang-skill-item"></div>
                 <div class="lang-skill-item"></div>
-                <div class="lang-skill-item clean"></div>
+                <div class="lang-skill-item"></div>
                 <div class="lang-skill-item clean"></div>
                 <div class="lang-skill-item clean"></div>
               </div>
