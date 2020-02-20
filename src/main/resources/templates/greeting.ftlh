@@ -15,7 +15,7 @@
 <div class="sidebar">
     <header>Welcome ${user.username} </header>
     <ul>
-<#--        <li><a href="messenger"><i class="fas fa-qrcode"></i>Messenger</a></li>-->
+        <li><a href="/helloSweaterPage"><i class="fas fa-qrcode"></i>Messenger</a></li>
 <#--        <li><a href="#"><i class="fas fa-link"></i>Project in Progress.....</a></li>-->
 <#--        <li><a href="#"><i class="fas fa-stream"></i>Overview</a></li>-->
 <#--        <li><a href="#"><i class="fas fa-calendar-week"></i>Events</a></li>-->

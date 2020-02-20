@@ -18,10 +18,11 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please fill the message")
+    @NotBlank(message = "Message cannot be empty")
     @Length(max = 2048, message = "Message to long (more then 2kB)")
     private String text;
 
+    @NotBlank(message = "Tag cannot be empty")
     @Length(max = 255, message = "Tag to long (more then 255 symbols)")
     private String tag;
 

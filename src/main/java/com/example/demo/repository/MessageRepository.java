@@ -11,7 +11,7 @@ import java.util.List;
 //@Transactional
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-//    List<Message> findByTag(String tag);
+    List<Message> findByTag(String tag);
 
 
 //    @Query(value = "select * from Message where user_id = ?1", nativeQuery = true)
