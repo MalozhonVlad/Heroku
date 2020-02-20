@@ -21,9 +21,9 @@
 <#--                    <a class="nav-link" href="/messages">зделать страничку пользователей видно только админу!!!</a>-->
 <#--                </li>-->
 <#--            </#if>-->
-<#--            <li class="nav-item">-->
-<#--                <a class="nav-link" href="/mymessages">My Messages</a>-->
-<#--            </li>-->
+            <li class="nav-item">
+                <a class="nav-link" href="/myMessages">My Messages</a>
+            </li>
         </ul>
 
         <div class="navbar-text mr-3">${name}</div>
