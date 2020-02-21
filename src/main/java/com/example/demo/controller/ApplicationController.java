@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -135,44 +134,32 @@ public class ApplicationController {
 
     @PostMapping("/editMessage/{userId}")
     public String editOneMessage(@AuthenticationPrincipal User currentUser,
-//                                 @PathVariable Long user,
-                                 @RequestParam("id") Message message,
-                                 @RequestParam("text") String text,
-                                 @RequestParam("tag") String tag,
-                                 @RequestParam("file") MultipartFile file,
-                                 Model model) throws IOException {
+                                 @Valid Message message,
+                                 BindingResult bindingResult,
+                                 Model model,
+                                 @RequestParam("file") MultipartFile file) throws IOException {
 
-
-        if (StringUtils.isEmpty(text) & text.equals("")) {
-            model.addAttribute("textError", "Text cannot be empty");
-            uploadFotoFromDb(Collections.singletonList(message));
-            model.addAttribute("message", message);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            Message byId = messageRepository.findById(message.getId()).get();
+            uploadFotoFromDb(Collections.singletonList(byId));
+            model.addAttribute("message", byId);
             return "editMessage";
+        } else {
+            currentUser.getMessageList().remove(message);
+
+            message.setText(message.getText());
+            message.setTag(message.getTag());
+
+            saveFileToDB(message, file);
+
+            currentUser.getMessageList().add(message);
+
+            message.setAuthor(currentUser);
+            messageRepository.save(message);
         }
 
-        if (StringUtils.isEmpty(tag) & tag.equals("")) {
-            model.addAttribute("tagError", "Tag cannot be empty");
-            uploadFotoFromDb(Collections.singletonList(message));
-            model.addAttribute("message", message);
-            return "editMessage";
-        }
-
-        currentUser.getMessageList().remove(message);
-
-        message.setText(text);
-        message.setTag(tag);
-
-        saveFileToDB(message, file);
-
-        currentUser.getMessageList().add(message);
-
-        message.setAuthor(currentUser);
-        messageRepository.save(message);
-
-
-//        Message messageById = messageRepository.findById(message.getId()).get();
-//        uploadFotoFromDb(Collections.singletonList(message));
-//        model.addAttribute("message", message);
         List<Message> messageListByUserId = messageRepository.findAllMessagesByUserId(currentUser.getId());
         uploadFotoFromDb(messageListByUserId);
         model.addAttribute("messages", messageListByUserId);
