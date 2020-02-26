@@ -14,7 +14,7 @@
     <span></span>
     <span></span>
     <span></span>
-    PORTFOLIO
+    ABOUT ME
 </a>
 <a href="/aboutProject">
     <span></span>
@@ -29,7 +29,7 @@
     <span></span>
     <span></span>
     <span></span>
-    LOGIN
+    MY WORKS
 </a>
 
 </body>
