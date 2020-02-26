@@ -7,7 +7,7 @@
         <form action="/filter" method="post">
             <input type="text" name="filter" placeholder="Find by Tag">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit" class="btn btn-primary">Найти</button>
+            <button type="submit" class="btn btn-primary">Find</button>
         </form>
     </div>
 
@@ -44,7 +44,7 @@
                 </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-primary">Добавить</button>
+                    <button type="submit" class="btn btn-primary">Add heroku login</button>
                 </div>
             </form>
         </div>
