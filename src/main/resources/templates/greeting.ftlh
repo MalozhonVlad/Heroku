@@ -13,15 +13,15 @@
     <i class="fas fa-times" id="cancel"></i>
 </label>
 <div class="sidebar">
-    <header>Welcome ${user.username} </header>
+    <header>Welcome <#if user??>${user.username}</#if> </header>
     <ul>
         <li><a href="/helloSweaterPage"><i class="fas fa-qrcode"></i>Messenger</a></li>
 <#--        <li><a href="#"><i class="fas fa-link"></i>Project in Progress.....</a></li>-->
 <#--        <li><a href="#"><i class="fas fa-stream"></i>Overview</a></li>-->
 <#--        <li><a href="#"><i class="fas fa-calendar-week"></i>Events</a></li>-->
-        <li><a href="/aboutProject"><i class="far fa-question-circle"></i>About</a></li>
+<#--        <li><a href="/aboutProject"><i class="far fa-question-circle"></i>About</a></li>-->
 <#--        <li><a href="#"><i class="fas fa-sliders-h"></i>Services</a></li>-->
-        <li><a href="/resume"><i class="far fa-envelope"></i>Contact</a></li>
+<#--        <li><a href="/resume"><i class="far fa-envelope"></i>Contact</a></li>-->
 
 
 
@@ -29,8 +29,6 @@
 <#--            <input type="hidden" name="_csrf" value="${_csrf.token}" />-->
 <#--            <button type="submit">Sign Out</button>-->
 <#--        </form></l1></i>-->
-
-
     </ul>
 </div>
 <section></section>

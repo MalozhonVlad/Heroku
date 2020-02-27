@@ -29,7 +29,7 @@
     <span></span>
     <span></span>
     <span></span>
-    MY WORKS
+    MY WORK
 </a>
 
 </body>
