@@ -43,7 +43,8 @@ public class ApplicationController {
     }
 
     @PostMapping("/filter")
-    public String filter(@RequestParam(required = false, defaultValue = "") String filter,
+    public String filter(@AuthenticationPrincipal User user,
+                         @RequestParam(required = false, defaultValue = "") String filter,
                          Model model) {
 
         Iterable<Message> messageByTag = filterService.findByTag(filter);
@@ -51,17 +52,20 @@ public class ApplicationController {
         uploadFotoFromDb(messageByTag);
 
         model.addAttribute("messages", messageByTag);
+        model.addAttribute("user", user);
         return "messages";
     }
 
     @GetMapping("/messages")
-    public String messages(Model model) {
+    public String messages(@AuthenticationPrincipal User user,
+                           Model model) {
 
         Iterable<Message> messages = filterService.findAll();
 
         uploadFotoFromDb(messages);
 
         model.addAttribute("messages", messages);
+        model.addAttribute("user", user);
 
         return "messages";
     }
@@ -94,6 +98,7 @@ public class ApplicationController {
 
         uploadFotoFromDb(messages);
         model.addAttribute("messages", messages);
+        model.addAttribute("user", user);
 
         return "messages";
     }
@@ -105,15 +110,18 @@ public class ApplicationController {
         List<Message> messageListByUserId = messageRepository.findAllMessagesByUserId(user.getId());
         uploadFotoFromDb(messageListByUserId);
         model.addAttribute("messages", messageListByUserId);
+        model.addAttribute("user", user);
         return "myMessages";
     }
 
     @GetMapping("/user-messages/{userId}")
-    public String userMessages(@PathVariable("userId") Long id,
+    public String userMessages(@AuthenticationPrincipal User user,
+                               @PathVariable("userId") Long id,
                                Model model) {
         List<Message> messageListByUserId = messageRepository.findAllMessagesByUserId(id);
         uploadFotoFromDb(messageListByUserId);
         model.addAttribute("messages", messageListByUserId);
+        model.addAttribute("user", user);
         return "myMessages";
     }
 

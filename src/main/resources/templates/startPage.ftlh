@@ -24,7 +24,7 @@
     ABOUT PROJECT
 </a>
 
-<a href="/greeting">
+<a href="/helloSweaterPage">
     <span></span>
     <span></span>
     <span></span>

@@ -3,19 +3,23 @@
 
 <@c.page>
 
-    <div class="form-group mt-3">
-        <form action="/filter" method="post">
-            <input type="text" name="filter" placeholder="Find by Tag">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit" class="btn btn-primary">Find</button>
-        </form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form action="/filter" method="post" class="form-inline">
+                <input type="text" name="filter" class="form-control" placeholder="Find by Tag">
+                <button type="submit" class="btn btn-primary">Find</button>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            </form>
+        </div>
     </div>
 
+    <#if user??>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+           aria-controls="collapseExample">
+            Add new Message
+        </a>
+    </#if>
 
-    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-       aria-controls="collapseExample">
-        Add new Message
-    </a>
 
 
     <div class="collapse <#if message??>show</#if>" id="collapseExample">
@@ -49,6 +53,7 @@
             </form>
         </div>
     </div>
+
 
 
 
