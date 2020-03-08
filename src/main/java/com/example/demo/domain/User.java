@@ -32,8 +32,8 @@ public class User implements UserDetails {
     @NotBlank(message = "Password confirmation cannot be empty")
     private String password2;
 
-    @Email(message = "Email is not correct")
-    @NotBlank(message = "Email cannot be empty")
+//    @Email(message = "Email is not correct")
+//    @NotBlank(message = "Email cannot be empty")
     private String email;
     private String activationCode;
 
@@ -49,6 +49,22 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Message> messageList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = { @JoinColumn(name = "channel_id") },
+            inverseJoinColumns = { @JoinColumn(name = "subscriber_id") }
+    )
+    private Set<User> subscribers = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = { @JoinColumn(name = "subscriber_id") },
+            inverseJoinColumns = { @JoinColumn(name = "channel_id") }
+    )
+    private Set<User> subscriptions = new HashSet<>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);

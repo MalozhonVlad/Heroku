@@ -6,6 +6,7 @@ import com.example.demo.domain.User;
 import com.example.demo.repository.MessageRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.FilterService;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.demo.controller.utils.ControllerUtils.saveFileToDB;
 import static com.example.demo.controller.utils.ControllerUtils.uploadFotoFromDb;
@@ -31,6 +29,7 @@ import static com.example.demo.controller.utils.ControllerUtils.uploadFotoFromDb
 @RequiredArgsConstructor
 public class ApplicationController {
 
+    private final UserService userService;
     private final FilterService filterService;
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
@@ -111,17 +110,35 @@ public class ApplicationController {
         uploadFotoFromDb(messageListByUserId);
         model.addAttribute("messages", messageListByUserId);
         model.addAttribute("user", user);
+
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
         return "myMessages";
     }
 
-    @GetMapping("/user-messages/{userId}")
+    @GetMapping("/user-messages/{authorId}")
     public String userMessages(@AuthenticationPrincipal User user,
-                               @PathVariable("userId") Long id,
+                               @PathVariable("authorId") Long id,
                                Model model) {
         List<Message> messageListByUserId = messageRepository.findAllMessagesByUserId(id);
         uploadFotoFromDb(messageListByUserId);
+        User authorOfMessages = userRepository.findById(id).get();
+
+        if (authorOfMessages.getSubscribers().contains(user)) {
+            model.addAttribute("isSubscriber", true);
+        } else {
+            model.addAttribute("isSubscriber", false);
+        }
+
         model.addAttribute("messages", messageListByUserId);
-        model.addAttribute("user", user);
+
+//        model.addAttribute("user", user);
+
+        model.addAttribute("authorId", id);
+        model.addAttribute("subscriptionsCount", authorOfMessages.getSubscriptions().size());
+        model.addAttribute("subscribersCount", authorOfMessages.getSubscribers().size());
+
+        model.addAttribute("user", authorOfMessages);
         return "myMessages";
     }
 
@@ -171,6 +188,11 @@ public class ApplicationController {
         List<Message> messageListByUserId = messageRepository.findAllMessagesByUserId(currentUser.getId());
         uploadFotoFromDb(messageListByUserId);
         model.addAttribute("messages", messageListByUserId);
+        model.addAttribute("user", currentUser);
+
+        model.addAttribute("subscriptionsCount", currentUser.getSubscriptions().size());
+        model.addAttribute("subscribersCount", currentUser.getSubscribers().size());
+
         return "myMessages";
     }
 
@@ -197,9 +219,31 @@ public class ApplicationController {
 
         List<Message> allMessagesByUserId = messageRepository.findAllMessagesByUserId(currentUser.getId());
         uploadFotoFromDb(allMessagesByUserId);
+
         model.addAttribute("messages", allMessagesByUserId);
+        model.addAttribute("user", currentUser);
+
+        model.addAttribute("subscriptionsCount", currentUser.getSubscriptions().size());
+        model.addAttribute("subscribersCount", currentUser.getSubscribers().size());
 
         return "myMessages";
+    }
+
+    @GetMapping("/user/subscribe/{userId}")
+    public String subscribe(@AuthenticationPrincipal User currentUser,
+                            @PathVariable("userId") Long userId) {
+
+        User findById = userRepository.findById(userId).get();
+        userService.subscribe(currentUser, findById);
+        return "redirect:/user-messages/" + userId;
+    }
+
+
+    @GetMapping("unsubscribe/user")
+    public String unsubscribe(@AuthenticationPrincipal User currentUser,
+                            @PathVariable User user) {
+        userService.unsubscribe(currentUser, user);
+        return "myMessages" + user.getId();
     }
 
 
